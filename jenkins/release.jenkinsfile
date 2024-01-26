@@ -89,8 +89,6 @@ pipeline {
                             string(name: 'DOCKER_BUILD_GIT_REPOSITORY', value: "${REPO_URL}"),
                             string(name: 'DOCKER_BUILD_GIT_REPOSITORY_REFERENCE', value: "${ref_final}"),
                             string(name: 'DOCKER_BUILD_SCRIPT_WITH_COMMANDS', value: [
-                                    'id',
-                                    'pwd',
                                     'ls -l',
                                     [
                                         'bash',
