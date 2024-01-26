@@ -42,7 +42,6 @@ pipeline {
             causeString: 'A commit was pushed on opensearch-project/opensearch-k8s-operator repository main branch causing this workflow to run',
             printContributedVariables: false,
             printPostContent: false,
-            regexpFilterText: '$isTag',
         )
     }
     environment {
@@ -51,11 +50,10 @@ pipeline {
         TIMER_BUILD_CAUSE = currentBuild.getBuildCauses('hudson.triggers.TimerTrigger$TimerTriggerCause')
     }
     stages {
-        stage('OpenSearch Operator Busybox') {
+        /*stage('OpenSearch Operator Busybox') {
             steps {
                 script {
                     def ref_final = "${GIT_REFERENCE}"
-                    println("the ref_final was : ${ref_final}")
                     def ref_url = "${REPO_URL}/commit/${GIT_REFERENCE}"
                     if (env.USER_BUILD_CAUSE.equals('[]') && env.TIMER_BUILD_CAUSE.equals('[]')) {
                         ref_final = "${ref}"
@@ -89,8 +87,6 @@ pipeline {
                             string(name: 'DOCKER_BUILD_GIT_REPOSITORY', value: "${REPO_URL}"),
                             string(name: 'DOCKER_BUILD_GIT_REPOSITORY_REFERENCE', value: "${ref_final}"),
                             string(name: 'DOCKER_BUILD_SCRIPT_WITH_COMMANDS', value: [
-                                    'id',
-                                    'pwd',
                                     'ls -l',
                                     [
                                         'bash',
@@ -98,6 +94,73 @@ pipeline {
                                         "-v ${OPERATOR_VERSION}",
                                         "-a 'x64,arm,arm64'",
                                         "-f opensearch-operator/Dockerfile-busybox",
+                                        "-p ${OPERATOR_PRODUCT}"
+                                    ].join(' ')
+                            ].join(' && ')),
+                        ]
+                    }
+                    dockerPromotion: {
+                        build job: 'docker-promotion',
+                            parameters: [
+                                string(name: 'SOURCE_IMAGES', value: '${OPERATOR_PRODUCT}:${OPERATOR_VERSION}'),
+                                string(name: 'RELEASE_VERSION', value: "${ref_final}"),
+                                string(name: 'DOCKER_HUB_PROMOTE', value: true),
+                                string(name: 'ECR_PROMOTE', value: true),
+                                string(name: 'TAG_LATEST', value: true)
+                            ]
+                    }
+                }
+            }
+            post {
+                always {
+                    cleanWs disableDeferredWipeout: true, deleteDirs: true
+                }
+            }
+        }*/
+        stage('OpenSearch Operator') {
+            steps {
+                script {
+                    def ref_final = "${GIT_REFERENCE}"
+                    def ref_url = "${REPO_URL}/commit/${GIT_REFERENCE}"
+                    if (env.USER_BUILD_CAUSE.equals('[]') && env.TIMER_BUILD_CAUSE.equals('[]')) {
+                        ref_final = "${ref}"
+                        ref_url = "${REPO_URL}/releases/tag/${ref}"
+                        println("Triggered by GitHub: ${ref_url}")
+
+                        currentBuild.description = """GitHub: <a href="${ref_url}">${ref_url}</a>"""
+                    }
+                    else {
+                        println("Triggered by User/Timer: ${ref_url}")
+                        currentBuild.description = """User/Timer: <a href="${ref_url}">${ref_url}</a>"""
+                    }
+
+                    if (ref_final == null || ref_final == '') {
+                        currentBuild.result = 'ABORTED'
+                        error("Missing git tag reference.")
+                    }
+
+                    echo("Git checkout ${REPO_URL} on ${ref_final} for opensearch-operator-busybox release")
+                    checkout scm
+                    sh("git checkout ${ref_final}")
+
+                    def OPERATOR_PRODUCT = "opensearch-operator"
+                    def OPERATOR_VERSION = "$ref_final"
+
+                    echo("${OPERATOR_PRODUCT}: ${OPERATOR_VERSION}")
+
+                    dockerBuild: {
+                        build job: 'docker-build',
+                        parameters: [
+                            string(name: 'DOCKER_BUILD_GIT_REPOSITORY', value: "${REPO_URL}"),
+                            string(name: 'DOCKER_BUILD_GIT_REPOSITORY_REFERENCE', value: "${ref_final}"),
+                            string(name: 'DOCKER_BUILD_SCRIPT_WITH_COMMANDS', value: [
+                                    'ls -l',
+                                    [
+                                        'bash',
+                                        'scripts/build-image-multi-arch.sh',
+                                        "-v ${OPERATOR_VERSION}",
+                                        "-a 'x64,arm,arm64'",
+                                        "-f opensearch-operator/Dockerfile",
                                         "-p ${OPERATOR_PRODUCT}"
                                     ].join(' ')
                             ].join(' && ')),
