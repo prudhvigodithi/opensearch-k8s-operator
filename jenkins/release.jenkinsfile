@@ -42,7 +42,6 @@ pipeline {
             causeString: 'A commit was pushed on opensearch-project/opensearch-k8s-operator repository main branch causing this workflow to run',
             printContributedVariables: false,
             printPostContent: false,
-            regexpFilterText: '$isTag',
         )
     }
     environment {
@@ -55,7 +54,6 @@ pipeline {
             steps {
                 script {
                     def ref_final = "${GIT_REFERENCE}"
-                    println("the ref_final was : ${ref_final}")
                     def ref_url = "${REPO_URL}/commit/${GIT_REFERENCE}"
                     if (env.USER_BUILD_CAUSE.equals('[]') && env.TIMER_BUILD_CAUSE.equals('[]')) {
                         ref_final = "${ref}"
@@ -89,8 +87,6 @@ pipeline {
                             string(name: 'DOCKER_BUILD_GIT_REPOSITORY', value: "${REPO_URL}"),
                             string(name: 'DOCKER_BUILD_GIT_REPOSITORY_REFERENCE', value: "${ref_final}"),
                             string(name: 'DOCKER_BUILD_SCRIPT_WITH_COMMANDS', value: [
-                                    'id',
-                                    'pwd',
                                     'ls -l',
                                     [
                                         'bash',
