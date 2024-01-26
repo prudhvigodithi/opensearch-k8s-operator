@@ -42,7 +42,8 @@ pipeline {
             causeString: 'A commit was pushed on opensearch-project/opensearch-k8s-operator repository main branch causing this workflow to run',
             printContributedVariables: false,
             printPostContent: false,
-            regexpFilterText: '$isTag',
+            regexpFilterText: '$ref',
+            regexpFilterExpression: '$isTag'
         )
     }
     environment {
@@ -89,8 +90,6 @@ pipeline {
                             string(name: 'DOCKER_BUILD_GIT_REPOSITORY', value: "${REPO_URL}"),
                             string(name: 'DOCKER_BUILD_GIT_REPOSITORY_REFERENCE', value: "${ref_final}"),
                             string(name: 'DOCKER_BUILD_SCRIPT_WITH_COMMANDS', value: [
-                                    'id',
-                                    'pwd',
                                     'ls -l',
                                     [
                                         'bash',
