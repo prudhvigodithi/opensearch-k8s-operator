@@ -53,6 +53,16 @@ entries:
     - https://prudhvigodithi.github.io/opensearch-k8s-operator/opensearch-operator-2.9.12.tgz
     version: 2.9.12
   - apiVersion: v2
+    appVersion: 2.6.2
+    created: "2024-11-05T15:22:35.201917847Z"
+    description: The OpenSearch Operator Helm chart for Kubernetes
+    digest: 6401ab81635ae55624ba3947d39ee28ed71fcf5a8ed26f9609ca1416950d04aa
+    name: opensearch-operator
+    type: application
+    urls:
+    - https://github.com/prudhvigodithi/opensearch-k8s-operator/releases/download/opensearch-operator-2.6.2/opensearch-operator-2.6.2.tgz
+    version: 2.6.2
+  - apiVersion: v2
     appVersion: 2.6.1
     created: "2024-09-17T17:07:28.977497349Z"
     description: The OpenSearch Operator Helm chart for Kubernetes
@@ -242,4 +252,4 @@ entries:
     urls:
     - https://opensearch-project.github.io/opensearch-k8s-operator/opensearch-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-05T15:08:58.435321855Z"
+generated: "2024-11-05T15:22:35.202099528Z"
