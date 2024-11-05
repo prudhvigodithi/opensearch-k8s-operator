@@ -37,7 +37,7 @@ jobs:
       - name: Run chart-releaser for opensearch-operator
         uses: helm/chart-releaser-action@v1.6.0
         with:
-          charts_dir: charts/opensearch-operator
+          skip_existing: true
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
