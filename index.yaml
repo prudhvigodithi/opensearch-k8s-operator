@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   opensearch-cluster:
   - apiVersion: v2
+    appVersion: 2.8.0
+    created: "2025-06-25T16:55:27.135110804Z"
+    description: A Helm chart for OpenSearch Cluster
+    digest: ddc91d241474122db50296e6823cbe1969793d9399e8341a51aa83e98b2948f6
+    name: opensearch-cluster
+    type: application
+    urls:
+    - https://github.com/prudhvigodithi/opensearch-k8s-operator/releases/download/opensearch-cluster-3.1.0/opensearch-cluster-3.1.0.tgz
+    version: 3.1.0
+  - apiVersion: v2
     appVersion: 2.7.0
     created: "2024-11-25T18:50:52.576223389Z"
     description: A Helm chart for OpenSearch Cluster
@@ -82,6 +92,16 @@ entries:
     urls:
     - https://prudhvigodithi.github.io/opensearch-k8s-operator/opensearch-operator-2.9.12.tgz
     version: 2.9.12
+  - apiVersion: v2
+    appVersion: 2.8.0
+    created: "2025-06-25T16:55:27.357111023Z"
+    description: The OpenSearch Operator Helm chart for Kubernetes
+    digest: cb170c0d651483dc7a63cf3566b24e6a8dbc0d058d55f1de250f64b0c7735fa0
+    name: opensearch-operator
+    type: application
+    urls:
+    - https://github.com/prudhvigodithi/opensearch-k8s-operator/releases/download/opensearch-operator-2.8.0/opensearch-operator-2.8.0.tgz
+    version: 2.8.0
   - apiVersion: v2
     appVersion: 2.7.0
     created: "2024-11-05T20:33:21.95578546Z"
@@ -292,4 +312,4 @@ entries:
     urls:
     - https://opensearch-project.github.io/opensearch-k8s-operator/opensearch-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-25T18:50:52.738331281Z"
+generated: "2025-06-25T16:55:27.357291961Z"
